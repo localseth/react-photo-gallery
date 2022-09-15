@@ -1,9 +1,9 @@
 // stateless component
 import React from 'react';
 
-const Photo = () => (
+const Photo = (props) => (
     <li>
-        <img src="#" alt=""></img>
+        <img src={`https://live.staticflickr.com/${props.server}/${props.id}_${props.secret}_z.jpg`} alt={props.alt}></img>
     </li>
 )
 

@@ -1,40 +1,16 @@
 // stateful component
 import React from 'react';
-const axios = require('axios');
-
-const fetchImages = () => {
-  axios.get('https://www.flickr.com/services/rest/?method=flickr.photos.getPopular?tags=kitten?per_page=24&format=json')
-    .then(function (response) {
-      // handle success
-      this.setState({
-        images: response.data
-      })
-      console.log(response);
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    })
-    .then(function () {
-      // always executed
-    });
-}
 
 
 class Search extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      images: []
+      images: this.props.images
     };
-  }
-
-  componentDidMount() {
-    fetchImages();
-  }
+  };
 
   render() {
-    console.log(this.state.images);
     return (
       <form className="search-form" autocomplete="off">
           <input type="search" name="search" placeholder="Search" required/>
@@ -47,6 +23,6 @@ class Search extends React.Component{
       </form>
     )
   }
-}
+};
 
 export default Search;
