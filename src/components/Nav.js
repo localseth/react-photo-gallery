@@ -1,14 +1,20 @@
 // stateless component
 import React from 'react';
 
-const Nav = (props) => (
-    <nav className="main-nav">
-        <ul>
-            {/* <li><a href='#' onClick={(props.imageSearch('cats'))}>Cats</a></li> */}
-            <li><a href='#'>Dogs</a></li>
-            <li><a href='#'>Computers</a></li>
-        </ul>
-  </nav>
-);
+const Nav = (props) => {
+    const handleClick = (e) => {
+        props.imageSearch(e.target.innerText.toLowerCase());
+    }
+
+    return(
+        <nav className="main-nav">
+            <ul>
+                <li><a href='#' onClick={handleClick}>Axolotyl</a></li>
+                <li><a href='#' onClick={handleClick}>Capybara</a></li>
+                <li><a href='#' onClick={handleClick}>Bush Baby</a></li>
+            </ul>
+        </nav>
+    )
+};
 
 export default Nav;
