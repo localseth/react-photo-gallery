@@ -26,8 +26,8 @@ class App extends React.Component {
     })
   }
 
-  componentDidMount() {
-    axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&tags=kitten&per_page=24&api_key=${apiKey}&format=json&nojsoncallback=1`)
+  imageSearch = (tag) => {
+    axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&tags=${tag}&per_page=24&api_key=${apiKey}&format=json&nojsoncallback=1`)
     .then(response => {
       // handle success
       this.updateImageState(response.data.photos.photo)
@@ -43,15 +43,20 @@ class App extends React.Component {
     });
   }
 
+  componentDidMount() {
+    this.imageSearch('cats and dogs');
+  }
+
   render() {
     return (
       <div className="container">
         <Search
           images={this.state.imageResults}
           apiKey={apiKey}
+          imageSearch={this.imageSearch}
           // fetchImages={fetchImages}
         />
-        <Nav />
+        <Nav imageSearch={this.imageSearch} />
         <Grid images={this.state.imageResults} />
       </div>
     );
