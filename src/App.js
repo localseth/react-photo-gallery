@@ -1,4 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { ReactDOM } from 'react-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from 'react-router-dom';
 import './App.css';
 
 // API Key
@@ -16,6 +22,7 @@ const axios = require('axios');
 function App() {
   const [imageResults, setImageResults] = useState([]);
 
+  // Requests images form flickr api and updates state with new array of image data
   const imageSearch = (tag) => {
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&tags=${tag}&per_page=24&api_key=${apiKey}&format=json&nojsoncallback=1`)
     .then(response => {
@@ -36,16 +43,19 @@ function App() {
   useEffect(() => imageSearch('cats and dogs'), []);
 
   return (
-    <div className="container">
-      <Search
-        images={imageResults}
-        apiKey={apiKey}
-        imageSearch={imageSearch}
-        // fetchImages={fetchImages}
-      />
-      <Nav imageSearch={imageSearch} />
-      <Grid images={imageResults} />
-    </div>
+    <BrowserRouter basename="/react-image-search">
+      <div className="container">
+        <Search
+            images={imageResults}
+            apiKey={apiKey}
+            imageSearch={imageSearch}
+        />
+        <Nav imageSearch={imageSearch} />
+        <Routes> 
+          <Grid images={imageResults} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
