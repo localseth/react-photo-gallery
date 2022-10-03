@@ -11,49 +11,50 @@ import './App.css';
 import apiKey from './config';
 
 // app components
-import Search from './components/Search';
+import Search2 from './components/Search2';
 import Nav from './components/Nav';
 import Grid from './components/Grid';
+import ImageLoader from './components/ImageLoader';
+
+// import { routes } from './routes.js';
 
 // include axios
 const axios = require('axios');
 
-
 function App() {
-  const [imageResults, setImageResults] = useState([]);
 
-  // Requests images form flickr api and updates state with new array of image data
-  const imageSearch = (tag) => {
-    axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&tags=${tag}&per_page=24&api_key=${apiKey}&format=json&nojsoncallback=1`)
-    .then(response => {
-      // handle success
-      setImageResults(response.data.photos.photo)
-      console.log(imageResults)
-    })
-    .catch(function (error) {
-      // handle error
-      console.log('There was an error fetching data', error);
-    })
-    .then(function () {
-      // always executed
-      console.log('no errors were encountered')
-    });
+  const defaultList = ["axolotyl", "capybara", "dinosaur"];
+
+  const getRandomDefault = () => {
+    let result = defaultList[Math.floor(Math.random() * defaultList.length)];
+    console.log(result);
+    return(
+      result
+    )
   }
 
-  useEffect(() => imageSearch('cats and dogs'), []);
-
   return (
-    <BrowserRouter basename="/react-image-search">
+    <BrowserRouter>
       <div className="container">
-        <Search
-            images={imageResults}
-            apiKey={apiKey}
-            imageSearch={imageSearch}
-        />
-        <Nav imageSearch={imageSearch} />
-        <Routes> 
-          <Grid images={imageResults} />
-        </Routes>
+      <Search2 />
+      <Nav defaultList={defaultList} />
+        <Routes>
+        {/* <ImageLoader tag="cats and dogs" /> */}
+          {/* <Search
+              images={imageResults}
+              apiKey={apiKey}
+              imageSearch={imageSearch}
+          /> */}
+            <Route path="/search/:query" element={<ImageLoader tag="" />} />
+            <Route path="/" element={<ImageLoader
+              defaultList={defaultList}
+              tag={getRandomDefault()}
+              />}
+            />
+            <Route path="/:tag" element={<ImageLoader tag={defaultList[0]} defaultList={defaultList} />} />
+            {/* <Route path={"/" + defaultList[2]} element={<ImageLoader tag={defaultList[1]} />} />
+            <Route path={"/" + defaultList[3]} element={<ImageLoader tag={defaultList[2]} />} /> */}
+          </Routes>
       </div>
     </BrowserRouter>
   );
