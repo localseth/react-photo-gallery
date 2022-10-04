@@ -15,6 +15,7 @@ import Search2 from './components/Search2';
 import Nav from './components/Nav';
 import Grid from './components/Grid';
 import ImageLoader from './components/ImageLoader';
+import NoRoute from './components/NoRoute';
 
 // import { routes } from './routes.js';
 
@@ -52,8 +53,7 @@ function App() {
               />}
             />
             <Route path="/:tag" element={<ImageLoader tag={defaultList[0]} defaultList={defaultList} />} />
-            {/* <Route path={"/" + defaultList[2]} element={<ImageLoader tag={defaultList[1]} />} />
-            <Route path={"/" + defaultList[3]} element={<ImageLoader tag={defaultList[2]} />} /> */}
+            <Route path="*" element={<NoRoute />} />
           </Routes>
       </div>
     </BrowserRouter>
