@@ -12,8 +12,6 @@ import Nav from './components/Nav';
 import ImageLoader from './components/ImageLoader';
 import NoRoute from './components/NoRoute';
 
-// import { routes } from './routes.js';
-
 function App() {
   // set default image list. Changing this array will reflect seamlessly in the UI
   const defaultList = ["axolotyl", "capybara", "dinosaur"];
@@ -21,9 +19,7 @@ function App() {
   const getRandomDefault = () => {
     let result = defaultList[Math.floor(Math.random() * defaultList.length)];
     console.log(result);
-    return(
-      result
-    )
+    return(result)
   }
 
   return (

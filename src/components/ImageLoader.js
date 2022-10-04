@@ -45,11 +45,10 @@ const ImageLoader = (props) => {
     //     tag = null;
     // }
 
-
-  // Requests images form flickr api and updates state with new array of image data
-    const imageSearch = (tag, setState) => {
+    // Requests images form flickr api and updates state with new array of image data
+    const imageSearch = (fetchQuery, setState) => {
         setIsLoading(true);
-        axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&tags=${tag}&per_page=24&api_key=${apiKey}&format=json&nojsoncallback=1`)
+        axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&tags=${fetchQuery}&per_page=24&api_key=${apiKey}&format=json&nojsoncallback=1`)
             .then(response => {
                 // handle success
             setState(response.data.photos.photo)
@@ -81,11 +80,11 @@ const ImageLoader = (props) => {
             console.log('there is a query!')
             imageSearch(query, setImageResults);
             setTitle(`Search Results for "${query}"`)
-        } else if (tag !== "search") {
-            imageSearch(tag, setImageResults)
-            setTitle(`Images of ${tag}`)
+        } else if (props.tag !== "search") {
+            imageSearch(props.tag, setImageResults)
+            setTitle(`Images of ${props.tag}`)
         }
-    }, [tag, query]);
+    }, [props.tag, query]);
 
 
     if (isLoading) {

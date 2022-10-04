@@ -24,7 +24,7 @@ function Search(props) {
   }, []);
 
   return (
-    <form className="search-form" onSubmit={handleSubmit} autocomplete="off">
+    <form className="search-form" onSubmit={handleSubmit} autoComplete="off">
         <input type="search" onChange={handleChange} name="search" placeholder="Search" required/>
         <button type="submit" className="search-button">
           <svg fill="#fff" height="24" viewBox="0 0 23 23" width="24" xmlns="http://www.w3.org/2000/svg">
