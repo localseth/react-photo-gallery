@@ -2,11 +2,7 @@ import React, {
     useState,
     useEffect
 } from 'react';
-import { ReactDOM } from 'react-dom';
 import {
-  BrowserRouter,
-  Routes,
-  Route,
   useParams
 } from 'react-router-dom';
 import '../App.css';
@@ -14,6 +10,8 @@ import '../App.css';
 // Import Components
 import Grid from './Grid';
 import NoResults from './NoResults';
+import NoRoute from './NoRoute';
+import Loading from './Loading';
 
 // API Key
 import apiKey from '../config';
@@ -28,6 +26,9 @@ const ImageLoader = (props) => {
     const [default1, setDefault1] = useState([]);
     const [default2, setDefault2] = useState([]);
     const [default3, setDefault3] = useState([]);
+
+    // Set state for loading
+    const [isLoading, setIsLoading] = useState(true);
 
     // Set state for page title
     const [title, setTitle] = useState("Flickr Image Search");
@@ -47,6 +48,7 @@ const ImageLoader = (props) => {
 
   // Requests images form flickr api and updates state with new array of image data
     const imageSearch = (tag, setState) => {
+        setIsLoading(true);
         axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&tags=${tag}&per_page=24&api_key=${apiKey}&format=json&nojsoncallback=1`)
             .then(response => {
                 // handle success
@@ -58,10 +60,12 @@ const ImageLoader = (props) => {
             })
             .then(function () {
                 // always executed
-                console.log('no errors were encountered')
+                console.log('no errors were encountered');
+                setIsLoading(false);
             });
         }
 
+    // Get default images
     useEffect(() => {
         if (defaultList) {
             imageSearch(props.defaultList[0], setDefault1);
@@ -69,26 +73,33 @@ const ImageLoader = (props) => {
             imageSearch(props.defaultList[2], setDefault3);
             console.log('Fetched default imagesets')
         }
-    }, [defaultList]);
+    }, [props.defaultList, defaultList]);
 
+    // Get images form search or initial page load and set title of page
     useEffect(() => {
         if (query) {
             console.log('there is a query!')
             imageSearch(query, setImageResults);
             setTitle(`Search Results for "${query}"`)
         } else if (tag !== "search") {
-            imageSearch(props.tag, setImageResults)
-            setTitle(`Images of ${props.tag}`)
+            imageSearch(tag, setImageResults)
+            setTitle(`Images of ${tag}`)
         }
-        }, [props.tag, query]);
+    }, [tag, query]);
 
-    if (tag && tag.toLowerCase() === "search") {
+
+    if (isLoading) {
+        console.log('Loading...')
         return(
-            <h2>Please enter a search term or click one of the default tags above</h2>
+            <Loading />
         )
     }
-
-    if (defaultList && defaultList.includes(tag) && tag !== "search") {
+    // Look for tag in default list and return the matching images
+    if (
+            tag &&
+            defaultList &&
+            defaultList.includes(tag)
+        ) {
         console.log(`Tag: ${tag}`, 'Default list found!');
         const defaultIndex = defaultList.findIndex(testString => testString.toLowerCase() === tag.toLowerCase());
         console.log(defaultIndex);
@@ -105,8 +116,19 @@ const ImageLoader = (props) => {
                 <Grid images={default3} />
             )
         }
+    // If tag does not match default images, it is not a valid route. Display 404.
+    } else if (
+            tag &&
+            defaultList &&
+            !defaultList.includes(tag)
+        ) {
+        console.log('tag is not included in default list');
+        return (
+            <NoRoute />
+        )
     }
 
+    // Display images from search query
     if (imageResults.length !== 0) {
         console.log('regular image search called! with the following images', imageResults)
         console.log('query: ' + query, 'tag: ' + tag)

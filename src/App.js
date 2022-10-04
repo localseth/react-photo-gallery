@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { ReactDOM } from 'react-dom';
+import React from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -7,23 +6,16 @@ import {
 } from 'react-router-dom';
 import './App.css';
 
-// API Key
-import apiKey from './config';
-
 // app components
-import Search2 from './components/Search2';
+import Search from './components/Search';
 import Nav from './components/Nav';
-import Grid from './components/Grid';
 import ImageLoader from './components/ImageLoader';
 import NoRoute from './components/NoRoute';
 
 // import { routes } from './routes.js';
 
-// include axios
-const axios = require('axios');
-
 function App() {
-
+  // set default image list. Changing this array will reflect seamlessly in the UI
   const defaultList = ["axolotyl", "capybara", "dinosaur"];
 
   const getRandomDefault = () => {
@@ -37,15 +29,9 @@ function App() {
   return (
     <BrowserRouter>
       <div className="container">
-      <Search2 />
+      <Search />
       <Nav defaultList={defaultList} />
         <Routes>
-        {/* <ImageLoader tag="cats and dogs" /> */}
-          {/* <Search
-              images={imageResults}
-              apiKey={apiKey}
-              imageSearch={imageSearch}
-          /> */}
             <Route path="/search/:query" element={<ImageLoader tag="" />} />
             <Route path="/" element={<ImageLoader
               defaultList={defaultList}
