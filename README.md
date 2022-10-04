@@ -1,3 +1,19 @@
+# Photo Gallery App
+A simple photo gallery and search app that generates the first 24 flickr images related to a specified tag. This project was written developed using React.
+
+## Code Features
+### `ImageLoader`
+The `ImageLoader` component is the central brain of the app's interface. This component handles all the GET requests and passes them into the state of the component to be utilized and passed into the `Grid` component for displaying the images. `ImageLoader` also handles the logic for displaying images based either on a search query entered by the user or from a list of pre-assigned tags that are fetched when the page first loads.
+
+### `defaultList`
+This is an array which defines the pre-assigned tags that will be fetched when the page loads. The array items can be changed and the buttons and GET requests will follow suit. It is currently built to only work with 3 pre-assigned categories.
+
+### `Loading`
+This component is a simple loading animation that blurs the background while images are being fetched. I followed [this tutorial](https://www.w3docs.com/snippets/css/how-to-create-loading-spinner-with-css.html) and modified to fit my needs.
+
+### Miscellaneous
+There are many other features of React and JavaScript that I used for this project that were new to me. Create React App saved me tons of time, React Router is very intelligent, and the good old-fashioned "phone a friend" came in handy.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

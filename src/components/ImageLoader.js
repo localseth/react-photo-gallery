@@ -39,16 +39,12 @@ const ImageLoader = (props) => {
     const defaultList = props.defaultList;
 
     let { query } = useParams();
-
     let { tag } = useParams()
-    // if (tag.toLowerCase() === "search") {
-    //     tag = null;
-    // }
-
+  
     // Requests images form flickr api and updates state with new array of image data
-    const imageSearch = (fetchQuery, setState) => {
+    async function imageSearch (fetchQuery, setState) {
         setIsLoading(true);
-        axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&tags=${fetchQuery}&per_page=24&api_key=${apiKey}&format=json&nojsoncallback=1`)
+        await axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&tags=${fetchQuery}&per_page=24&api_key=${apiKey}&format=json&nojsoncallback=1`)
             .then(response => {
                 // handle success
             setState(response.data.photos.photo)
@@ -57,7 +53,7 @@ const ImageLoader = (props) => {
                 // handle error
                 console.log('There was an error fetching data', error);
             })
-            .then(function () {
+            .then( function () {
                 // always executed
                 console.log('no errors were encountered');
                 setIsLoading(false);
@@ -115,6 +111,7 @@ const ImageLoader = (props) => {
                 <Grid images={default3} />
             )
         }
+
     // If tag does not match default images, it is not a valid route. Display 404.
     } else if (
             tag &&
@@ -137,7 +134,7 @@ const ImageLoader = (props) => {
     } else if (imageResults.length === 0) {
         return(
             <NoResults query={query} />
-        )
+        )  
     };
 }
 
